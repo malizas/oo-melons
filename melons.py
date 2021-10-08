@@ -1,11 +1,10 @@
 """Classes for melon orders."""
 class AbstractMelonOrder():
 
-    def __init__(self, species, qty, order_type):
+    def __init__(self, species, qty):
         self.species = species
         self.qty = qty
         self.shipped = False
-        self.order_type = order_type
     
     def get_total(self):
         if self.species == "christmas melon":
@@ -23,24 +22,36 @@ class AbstractMelonOrder():
     def mark_shipped(self):
         self.shipped = True
 
+class GovernmentMelonOrder(AbstractMelonOrder):
+    order_type = "government"
+    tax = 0.00
+
+    def __init__(self, species, qty):
+        super().__init__(species, qty)
+        self.passed_inspection = False
+
+    def mark_inspection(self, passed):
+        if passed == "Succesfully inspected":
+            self.passed_inspection = True
+
 
 class DomesticMelonOrder(AbstractMelonOrder):
-    # order_type = "domestic"
+    order_type = "domestic"
     tax = 0.08
 
 
 class InternationalMelonOrder(AbstractMelonOrder):
-    # order_type = "international"
+    order_type = "international"
     tax = 0.17
 
-    def __init__(self, species, qty, order_type, country_code):
-        super().__init__(species, qty, order_type) # refers back to the __init__ function from line 4
+    def __init__(self, species, qty, country_code):
+        super().__init__(species, qty) # refers back to the __init__ function from line 4
         self.country_code = country_code
 
     def get_country_code(self):
         return self.country_code
     
-    
+
 
 
 
